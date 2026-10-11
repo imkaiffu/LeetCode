@@ -15,28 +15,22 @@
  */
 class Solution {
     public TreeNode balanceBST(TreeNode root) {
-        List<Integer> sortedValues = new ArrayList<>();
-        inorder(root, sortedValues);
-        return buildBST(sortedValues, 0, sortedValues.size() - 1);
+        List<Integer> ans = new ArrayList<>();
+        solve(ans, root);
+        return bst(ans, 0, ans.size()-1);
     }
-
-    private void inorder(TreeNode node, List<Integer> values) {
-        if (node == null) {
-            return;
-        }
-        inorder(node.left, values);
-        values.add(node.val);
-        inorder(node.right, values);
+     public void solve(List<Integer> ans, TreeNode root) {
+        if (root == null) return;
+        solve(ans, root.left);
+        ans.add(root.val);
+        solve(ans, root.right);
     }
-
-    private TreeNode buildBST(List<Integer> values, int start, int end) {
-        if (start > end) {
-            return null;
-        }
-        int mid = start + (end - start) / 2;
-        TreeNode node = new TreeNode(values.get(mid));
-        node.left = buildBST(values, start, mid - 1);
-        node.right = buildBST(values, mid + 1, end);
-        return node;
+    public TreeNode bst(List<Integer> ans, int st, int end){
+        if(st > end) return null;
+        int mid = (st + end) / 2;
+        TreeNode root = new TreeNode(ans.get(mid));
+        root.left = bst(ans, st, mid-1);
+        root.right = bst(ans, mid+1, end);
+        return root;
     }
 }
